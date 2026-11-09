@@ -63,7 +63,7 @@ export default function MatchesPage() {
             <h2 className="px-4 text-sm font-bold text-[#ff8fb0]">Nuevos matches</h2>
             <div className="mt-2 flex gap-3 overflow-x-auto px-4 py-1 no-scrollbar">
               {fresh.map(({ match, profile }) => (
-                <Link key={match.id} href={`/chat/${match.id}`} className="w-20 shrink-0 text-center">
+                <Link key={match.id} href={`/chat?id=${match.id}`} className="w-20 shrink-0 text-center">
                   <div className={`relative h-24 w-20 overflow-hidden rounded-2xl ring-2 ${MODE_STYLE[match.mode].ring}`}>
                     <Photo src={profile.photos[0]} alt={profile.name} className="h-full w-full" emojiSize="text-4xl" />
                     <span className="absolute bottom-1 right-1 text-sm">{MODES.find((m) => m.id === match.mode)?.emoji}</span>
@@ -81,7 +81,7 @@ export default function MatchesPage() {
             <ul className="mt-2">
               {convos.map(({ match, profile, last }) => (
                 <li key={match.id}>
-                  <Link href={`/chat/${match.id}`} className="flex items-center gap-3 px-4 py-3 active:bg-white/[0.04]">
+                  <Link href={`/chat?id=${match.id}`} className="flex items-center gap-3 px-4 py-3 active:bg-white/[0.04]">
                     <div className="h-14 w-14 shrink-0 overflow-hidden rounded-full">
                       <Photo src={profile.photos[0]} alt={profile.name} className="h-full w-full" emojiSize="text-2xl" />
                     </div>

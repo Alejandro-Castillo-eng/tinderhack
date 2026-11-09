@@ -1,16 +1,17 @@
 import type { Metadata, Viewport } from "next";
 import { StoreProvider } from "@/lib/store";
 import { RegisterSW } from "@/components/RegisterSW";
+import { asset } from "@/lib/base";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: "TinderHack",
   description: "Conoce gente en hackathones: citas, amigos y equipo.",
-  manifest: "/manifest.webmanifest",
+  manifest: asset("/manifest.webmanifest"),
   appleWebApp: { capable: true, title: "TinderHack", statusBarStyle: "black-translucent" },
   icons: {
-    icon: "/icon.svg",
-    apple: "/apple-touch-icon.png",
+    icon: asset("/icon.svg"),
+    apple: asset("/apple-touch-icon.png"),
   },
 };
 

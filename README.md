@@ -3,6 +3,8 @@
 Web app con look & feel de app móvil para **conocer gente en hackathones**: citas 💘, amigos 🤝 y equipo 🛠️.
 Desliza perfiles, haz match y rompe el hielo en el chat.
 
+👉 **Pruébala:** https://alejandro-castillo-eng.github.io/tinderhack/ (ábrela en el celular y usa "Agregar a pantalla de inicio")
+
 > **Estado: MVP de demo (frontend completo).** Todo funciona en el navegador. Los datos se guardan en `localStorage` de tu dispositivo, los perfiles y eventos son de ejemplo y las respuestas del chat son simuladas. El siguiente paso es conectar Supabase (ver `PLAN.md`).
 
 ## Qué incluye
@@ -31,15 +33,20 @@ npm run dev
 
 Abre http://localhost:3000. En la computadora se ve como un teléfono centrado. Para la experiencia real, ábrelo desde tu celular en la misma red (`http://IP-de-tu-compu:3000`) o usa el modo dispositivo de las DevTools.
 
-Build de producción:
+
+## Deploy (GitHub Pages)
+
+La app se exporta como sitio estático (`output: "export"`) y se publica sola con GitHub Actions (`.github/workflows/deploy-pages.yml`) en cada push.
+
+Configuración (solo una vez): en GitHub, **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+
+Para probar el build estático en local:
 
 ```bash
-npm run build && npm start
+NEXT_PUBLIC_BASE_PATH=/tinderhack npm run build
 ```
 
-## Deploy
-
-Lo más fácil es **Vercel**: importa el repo y despliega sin configuración. El service worker solo se registra en producción.
+El resultado queda en `out/`. `vercel.json` desactiva los deploys automáticos de Vercel.
 
 ## Estructura
 
@@ -47,7 +54,7 @@ Lo más fácil es **Vercel**: importa el repo y despliega sin configuración. El
 app/
   welcome/ onboarding/ hackathons/     # flujo de entrada
   (app)/discover|matches|profile/       # pantallas con barra inferior
-  chat/[id]/                            # chat a pantalla completa
+  chat/                                 # chat a pantalla completa (/chat?id=...)
 components/                             # SwipeDeck, ProfileCard, MatchModal, BottomNav, ui…
 lib/
   store.tsx    # estado + persistencia (API que luego se implementa con Supabase)

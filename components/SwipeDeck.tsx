@@ -229,7 +229,7 @@ export function SwipeDeck({ mode }: { mode: Mode }) {
         onChat={() => {
           const id = matchData?.match.id;
           setMatchData(null);
-          if (id) router.push(`/chat/${id}`);
+          if (id) router.push(`/chat?id=${id}`);
         }}
       />
     </>

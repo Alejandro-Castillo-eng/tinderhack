@@ -1,8 +1,10 @@
 // Service worker mínimo: hace la app instalable y guarda la página de inicio para abrir sin conexión.
-const CACHE = "tinderhack-v1";
+// Usa el scope del registro para funcionar también dentro de una subcarpeta (GitHub Pages).
+const CACHE = "tinderhack-v2";
+const HOME = new URL("./", self.registration.scope).pathname;
 
 self.addEventListener("install", (event) => {
-  event.waitUntil(caches.open(CACHE).then((c) => c.addAll(["/"])).then(() => self.skipWaiting()));
+  event.waitUntil(caches.open(CACHE).then((c) => c.addAll([HOME])).then(() => self.skipWaiting()));
 });
 
 self.addEventListener("activate", (event) => {
@@ -27,6 +29,6 @@ self.addEventListener("fetch", (event) => {
         }
         return res;
       })
-      .catch(() => caches.match(req).then((r) => r || caches.match("/"))),
+      .catch(() => caches.match(req).then((r) => r || caches.match(HOME))),
   );
 });

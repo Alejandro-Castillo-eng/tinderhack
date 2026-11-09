@@ -1,7 +1,7 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { IconBack, IconDots, IconSend, IconShield } from "@/components/icons";
 import { Photo } from "@/components/Photo";
 import { ProfileDetail } from "@/components/ProfileCard";
@@ -13,9 +13,9 @@ import { useGuard } from "@/lib/useGuard";
 
 type Sheet = null | "menu" | "profile" | "report" | "confirm-unmatch" | "confirm-block";
 
-export default function ChatPage() {
+function ChatInner() {
   const ready = useGuard();
-  const { id } = useParams<{ id: string }>();
+  const id = useSearchParams().get("id") ?? "";
   const router = useRouter();
   const { state, typing, getProfile, sendMessage, unmatch, block, report } = useStore();
   const [text, setText] = useState("");
@@ -229,5 +229,13 @@ export default function ChatPage() {
         </div>
       </BottomSheet>
     </div>
+  );
+}
+
+export default function ChatPage() {
+  return (
+    <Suspense fallback={<Splash />}>
+      <ChatInner />
+    </Suspense>
   );
 }
