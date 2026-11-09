@@ -1,0 +1,4 @@
+:HL["/tinderhack/_next/static/chunks/1urj76u6nuei1.css","style"]
+2:[["children",{"s":"__PAGE__","h":160}]]
+1:[["children",{"s":"onboarding","h":96,"c":"$Q2"}]]
+0:{"b":"Ur-yo6R7eH5jjjq2AGKaK","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
