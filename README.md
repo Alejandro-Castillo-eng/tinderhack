@@ -36,9 +36,7 @@ Abre http://localhost:3000. En la computadora se ve como un teléfono centrado. 
 
 ## Deploy (GitHub Pages)
 
-La app se exporta como sitio estático (`output: "export"`) y se publica sola con GitHub Actions (`.github/workflows/deploy-pages.yml`) en cada push.
-
-Configuración (solo una vez): en GitHub, **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+La app se exporta como sitio estático (`output: "export"`). En cada push, GitHub Actions (`.github/workflows/deploy-pages.yml`) la compila y publica el resultado en la rama `gh-pages`, que es la que sirve GitHub Pages. No hay que configurar nada.
 
 Para probar el build estático en local:
 
