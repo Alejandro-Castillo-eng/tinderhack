@@ -1,128 +1,168 @@
 # TinderHack — Plan del proyecto
 
-> Una web app con look & feel de app móvil para encontrar compañeros de equipo en hackathones: haces swipe sobre perfiles de hackers, y si los dos dicen "sí", hay match y pueden chatear para armar equipo.
+> Una web app con look & feel de app móvil para **conocer gente en hackathones**: hacer swipe sobre perfiles de otros hackers para **ligar / tener citas**, **hacer amigos** o **armar equipo**. Si los dos dicen "sí", hay match y pueden chatear.
 
 ---
 
 ## 1. Concepto
 
+La idea principal es que **chicos y chicas que van a hackathones se conozcan más**. Comparten intereses (tecnología, construir cosas, eventos) pero en un hackathon casi no hay tiempo de hablar con gente fuera de tu equipo. TinderHack rompe el hielo.
+
+### Tres modos (como Bumble Date / BFF)
+| Modo | Para qué | Quién te aparece |
+|---|---|---|
+| 💘 **Date** (modo principal) | Ligar, conocer a alguien, tener una cita | Según tu género y a quién te interesa ver |
+| 🤝 **Amigos** | Conocer gente, hacer networking, ir juntos al after | Todos los que activaron este modo |
+| 🛠️ **Equipo** | Encontrar compañeros para el hackathon | Todos, ordenados por skills complementarias |
+
+- Cada usuario elige qué modos activa (puede tener solo *Date*, o los tres).
+- **Los matches están separados por modo**: un like en *Equipo* nunca cuenta como like en *Date*. Así nadie se siente incómodo.
+
+### Qué tiene de "hacker" vs. un Tinder normal
 | Tinder | TinderHack |
 |---|---|
-| Fotos y bio | Foto, rol (frontend, backend, diseño, ML, negocio…), stack, nivel, links (GitHub, LinkedIn, portafolio) |
-| Ubicación / distancia | **Hackathon** al que vas (solo ves gente del mismo evento) |
-| "Busco relación" | "Busco equipo" / "Tengo equipo, busco un perfil de X" / "Tengo idea" / "Me uno a una idea" |
-| Like / Nope | **Swipe derecha = "quiero hackear contigo"**, izquierda = pasar |
-| Match → chat | Match → chat → **crear equipo** (opcional) |
+| Fotos y bio | Fotos, bio, **rol y stack**, "mi primer lenguaje", proyecto del que estoy orgulloso, GitHub |
+| Ubicación / distancia | **Hackathon** al que vas (o hackathones pasados en común) |
+| Prompts tipo "Mi domingo ideal…" | Prompts nerd: "Tabs o spaces", "Mi peor bug", "Te invito un café si…", "Mi stack para una cita: …" |
+| Match → chat | Match → chat → icebreakers: "¿Nos vemos en el coffee break?", "¿Vamos juntos a la charla de X?" |
 
 ### Usuario objetivo
-Personas que van a un hackathon solas o con un equipo incompleto y quieren encontrar perfiles complementarios rápido (normalmente en las 24–48 h antes o durante el evento).
+Personas de 18 años o más que van a hackathones, quieren conocer gente del ambiente tech y no necesariamente buscan solo equipo.
 
 ---
 
 ## 2. Funcionalidades
 
-### MVP (lo mínimo para que funcione)
-1. **Registro / login** — email mágico o Google/GitHub OAuth.
-2. **Onboarding / perfil** — foto, nombre, rol principal, skills (tags), nivel (junior/mid/senior), qué busco, links, bio corta.
-3. **Elegir hackathon** — lista de eventos (al inicio cargados a mano) o unirse con un código.
-4. **Deck de swipe** — tarjetas apiladas con gesto de arrastre (izquierda/derecha) + botones ✕ / ♥.
-5. **Match** — si ambos dieron like → pantalla "It's a match!" con animación.
-6. **Lista de matches + chat** en tiempo real 1 a 1.
-7. **Navegación inferior tipo app** — Descubrir · Matches · Perfil.
+### MVP
+1. **Registro / login** con Google o GitHub y **confirmar que eres mayor de 18**.
+2. **Onboarding / perfil**
+   - 2–6 fotos, nombre, edad, bio
+   - **Género** (hombre / mujer / no binario / otro) y **me interesa ver** (hombres / mujeres / todos). Solo se usa en el modo *Date*.
+   - Modos activos: Date / Amigos / Equipo
+   - Lado tech: rol, skills, nivel, GitHub (opcional)
+   - 2–3 **prompts** con respuestas
+3. **Elegir hackathon** (lista o código). Opción "conocer gente de cualquier hackathon de mi ciudad".
+4. **Deck de swipe** con selector de modo arriba (💘 / 🤝 / 🛠️).
+5. **Match** → pantalla "It's a match!" con animación.
+6. **Matches + chat** en tiempo real, con icebreakers sugeridos.
+7. **Seguridad básica**: bloquear, reportar y deshacer match. (Es obligatorio en una app de citas, no puede ser opcional.)
+8. **Navegación inferior**: Descubrir · Matches · Perfil.
 
-### V2 (después del MVP)
-- Filtros: "solo muéstrame diseñadores", "solo gente con Python", etc.
-- **Ordenar por compatibilidad**: priorizar perfiles cuyas skills complementan las tuyas (si eres backend, ver más frontend/diseño).
-- **Equipos**: crear un equipo desde un match, invitar más miembros, el equipo aparece como tarjeta ("Equipo X busca diseñador").
-- Super-like ("⚡ tengo una idea contigo").
-- Notificaciones push (PWA) cuando hay match o mensaje.
-- Panel para organizadores: crear hackathon, ver estadísticas.
-- Reportar/bloquear usuarios.
-
----
-
-## 3. Que se vea como app móvil (en web)
-
-- **Layout centrado tipo teléfono**: en móvil ocupa toda la pantalla; en escritorio se muestra un "marco" de ~420 px de ancho centrado.
-- **Viewport y safe areas**: `<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">` y `env(safe-area-inset-*)` para el notch.
-- Altura con `100dvh` (no `100vh`) para que no salte con la barra del navegador.
-- **Bottom tab bar** fija, header simple, transiciones entre pantallas.
-- **Gestos**: drag de tarjetas con física (Framer Motion), rotación según el arrastre, sellos "HACK" / "PASS".
-- Sin scroll del body en la pantalla de swipe (`overscroll-behavior: none`, `touch-action`).
-- **PWA**: `manifest.json` + service worker → "Agregar a pantalla de inicio", ícono, splash, abre a pantalla completa sin barra del navegador.
-- Feedback háptico con `navigator.vibrate()` en Android al hacer match.
+### V2
+- **Modo "En el evento"**: ver quién está en el mismo hackathon *ahora mismo* y proponer verse en el coffee break, en la comida o en el after.
+- Likes a una foto o a un prompt específico, con comentario (como Hinge).
+- Super-like ⚡.
+- Compatibilidad: intereses y stacks en común ("¡Los dos usan Rust!").
+- Filtros: edad, modo, rol.
+- Notificaciones push (PWA).
+- Verificación de perfil con selfie.
+- Crear equipo a partir de matches de *Equipo*.
+- Panel para organizadores (los hackathones pueden ofrecerlo como actividad social).
 
 ---
 
-## 4. Stack recomendado
+## 3. Seguridad y privacidad (muy importante en una app de citas)
+
+- **Solo mayores de 18**: confirmar la edad en el registro y, en V2, verificar con selfie.
+- **Nadie ve quién le dio like** hasta que hay match.
+- **No se muestra el email, el teléfono ni el apellido**. El GitHub y el LinkedIn son opcionales.
+- **Bloquear**: la persona bloqueada desaparece de tu deck y de tus matches para siempre (y tú del suyo).
+- **Reportar**: con motivos (acoso, perfil falso, menor de edad, contenido inapropiado) y una cola de moderación para los admins.
+- **Cada modo respeta tus preferencias**: si solo activaste *Equipo*, nunca apareces en *Date*.
+- Rate limit de likes y mensajes para evitar spam.
+- Código de conducta en el onboarding (los hackathones ya suelen tener uno: enlazarlo).
+- Ubicación: **nunca exacta**, solo "está en el mismo hackathon".
+
+---
+
+## 4. Que se vea como app móvil (en web)
+
+- **Layout centrado tipo teléfono**: en el móvil ocupa toda la pantalla; en la computadora se muestra un "marco" de ~420 px centrado.
+- `<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">` + `env(safe-area-inset-*)` para el notch.
+- Altura con `100dvh`.
+- **Bottom tab bar** fija y transiciones entre pantallas.
+- **Gestos**: drag de tarjetas con física (Framer Motion), rotación, sellos "LIKE" / "NOPE". Tocar los lados de la tarjeta cambia de foto.
+- `overscroll-behavior: none` en la pantalla de swipe.
+- **PWA**: manifest + service worker → instalable, pantalla completa e ícono propio.
+- `navigator.vibrate()` al hacer match (en Android).
+
+---
+
+## 5. Stack recomendado
 
 | Capa | Herramienta | Por qué |
 |---|---|---|
-| Frontend | **Next.js (React) + TypeScript** | Estándar, rápido de desplegar |
-| Estilos | **Tailwind CSS** | Rápido para UI móvil |
-| Animaciones / swipe | **Framer Motion** | Drag + spring listos para tarjetas |
-| Backend / BD | **Supabase** (Postgres + Auth + Realtime + Storage) | Login, base de datos, chat en tiempo real y fotos, sin escribir servidor |
-| PWA | `next-pwa` o manifest + SW manual | Instalable en el teléfono |
-| Deploy | **Vercel** | Gratis, deploy automático desde GitHub |
-
-> Alternativa sin backend para un prototipo de demo: datos falsos en JSON + `localStorage`. Sirve para presentar la idea en un día, luego se conecta Supabase.
+| Frontend | **Next.js + TypeScript** | Estándar y fácil de desplegar |
+| Estilos | **Tailwind CSS** | Rápido para hacer UI móvil |
+| Animaciones / swipe | **Framer Motion** | Drag y animaciones de resorte |
+| Backend / BD | **Supabase** (Postgres + Auth + Realtime + Storage) | Login, BD, chat en tiempo real y fotos sin escribir un servidor |
+| PWA | manifest + SW (`next-pwa` o Serwist) | Instalable en el teléfono |
+| Deploy | **Vercel** | Gratis y con deploy automático |
 
 ---
 
-## 5. Modelo de datos (Supabase / Postgres)
+## 6. Modelo de datos (Supabase / Postgres)
 
 ```text
 profiles
-  id (uuid, = auth.users.id)
-  name, avatar_url, bio
-  role            -- 'frontend' | 'backend' | 'fullstack' | 'design' | 'ml' | 'business' | ...
-  skills          -- text[]  ej. {react, python, figma}
-  level           -- 'junior' | 'mid' | 'senior'
-  looking_for     -- 'team' | 'member' | 'idea'
-  github_url, linkedin_url, portfolio_url
-  created_at
+  id (uuid = auth.users.id)
+  name, birthdate, bio
+  gender            -- 'man' | 'woman' | 'nonbinary' | 'other'
+  interested_in     -- text[]  ej. {woman} o {man, woman, nonbinary}
+  modes             -- text[]  {date, friends, team}
+  role, skills (text[]), level, github_url
+  prompts           -- jsonb [{question, answer}]
+  is_verified, created_at
+
+profile_photos
+  id, profile_id, url, position
 
 hackathons
-  id, name, city, starts_at, ends_at, join_code, cover_url
+  id, name, city, starts_at, ends_at, join_code
 
 hackathon_participants
-  hackathon_id, profile_id      -- PK compuesta
+  hackathon_id, profile_id, checked_in_at   -- PK compuesta
 
 swipes
-  swiper_id, swiped_id, hackathon_id
-  direction       -- 'like' | 'pass'
-  created_at
-  UNIQUE (swiper_id, swiped_id, hackathon_id)
+  swiper_id, swiped_id, mode, direction ('like'|'pass'|'superlike'), created_at
+  UNIQUE (swiper_id, swiped_id, mode)
 
 matches
-  id, hackathon_id, user_a, user_b, created_at   -- user_a < user_b
+  id, mode, user_a, user_b, created_at, unmatched_at   -- user_a < user_b
 
 messages
-  id, match_id, sender_id, body, created_at
+  id, match_id, sender_id, body, created_at, read_at
+
+blocks
+  blocker_id, blocked_id, created_at
+
+reports
+  id, reporter_id, reported_id, reason, details, status, created_at
 ```
 
 **Lógica clave**
-- **Deck**: participantes del mismo hackathon, excluyendo a uno mismo y a quienes ya swipeaste.
-- **Match**: un trigger en Postgres al insertar un `like` revisa si existe el `like` inverso → inserta en `matches`.
-- **Seguridad (RLS)**: cada usuario solo lee sus swipes, sus matches y los mensajes de sus matches. Nadie puede ver quién le dio like antes de que haya match.
-- **Chat**: suscripción Realtime a `messages` filtrado por `match_id`.
+- **Deck (modo Date)**: participantes del mismo hackathon (o ciudad), mayores de 18, con `date` en `modes`, **compatibilidad mutua de género** (yo estoy en su `interested_in` y él/ella en el mío), y que no estén swipeados ni bloqueados en ninguna dirección.
+- **Deck (Amigos / Equipo)**: lo mismo, pero sin el filtro de género.
+- **Match**: un trigger de Postgres, al recibir un `like`, busca el like inverso **en el mismo modo** y, si existe, crea el match.
+- **RLS**: cada uno solo lee sus swipes, sus matches y sus mensajes. Las fotos y los perfiles solo son visibles para usuarios autenticados.
+- La consulta del deck va en una **función RPC de Postgres** (`get_deck(mode, hackathon_id)`), así los filtros de seguridad no se pueden saltar desde el cliente.
 
 ---
 
-## 6. Pantallas
+## 7. Pantallas
 
-1. **Landing / Login** — logo, tagline, "Entrar con GitHub".
-2. **Onboarding** (3–4 pasos) — foto → rol y skills → qué busco → links.
-3. **Elegir hackathon** — tarjetas de eventos o input de código.
-4. **Descubrir (swipe)** — pila de tarjetas: foto, nombre, rol, skills como chips, nivel; tocar para ver detalle.
-5. **It's a match!** — modal con las dos fotos y botón "Enviar mensaje".
-6. **Matches** — fila de matches nuevos + lista de conversaciones.
-7. **Chat** — burbujas, input fijo abajo.
-8. **Perfil** — ver/editar mi perfil, cambiar hackathon, cerrar sesión.
+1. **Landing / Login**: logo, tagline ("Hackea tu vida amorosa 💘"), "Entrar con Google/GitHub".
+2. **Onboarding** (5–6 pasos): nombre y edad → fotos → género y a quién quiero ver → modos → lado tech → prompts → código de conducta.
+3. **Elegir hackathon**.
+4. **Descubrir**: selector de modo 💘🤝🛠️, deck de tarjetas (fotos con indicador, nombre, edad, rol, chips de stack) y, al tocar, el perfil completo con prompts.
+5. **It's a match!**: las dos fotos, botón "Enviar mensaje" e icebreakers.
+6. **Matches**: carrusel de nuevos matches + conversaciones, con pestañas por modo.
+7. **Chat**: burbujas, icebreakers y menú ⋯ (deshacer match / bloquear / reportar).
+8. **Perfil**: editar, vista previa ("así te ven otros"), ajustes de modos y preferencias, cerrar sesión.
 
 ---
 
-## 7. Estructura de carpetas sugerida
+## 8. Estructura de carpetas sugerida
 
 ```text
 tinderhack/
@@ -130,52 +170,50 @@ tinderhack/
 │  ├─ (auth)/login/page.tsx
 │  ├─ onboarding/page.tsx
 │  ├─ hackathons/page.tsx
-│  ├─ (app)/layout.tsx          # marco móvil + bottom tab bar
+│  ├─ (app)/layout.tsx              # marco móvil + bottom nav
 │  ├─ (app)/discover/page.tsx
 │  ├─ (app)/matches/page.tsx
 │  ├─ (app)/matches/[id]/page.tsx   # chat
 │  └─ (app)/profile/page.tsx
 ├─ components/
-│  ├─ SwipeDeck.tsx
-│  ├─ ProfileCard.tsx
-│  ├─ MatchModal.tsx
-│  ├─ BottomNav.tsx
-│  └─ ChatBubble.tsx
+│  ├─ SwipeDeck.tsx, ProfileCard.tsx, PhotoCarousel.tsx
+│  ├─ ModeSwitcher.tsx, MatchModal.tsx
+│  ├─ BottomNav.tsx, ChatBubble.tsx, ReportSheet.tsx
 ├─ lib/supabase/ (client.ts, server.ts)
-├─ supabase/migrations/          # tablas, trigger de match, RLS
+├─ supabase/migrations/   # tablas, trigger de match, get_deck(), RLS
 ├─ public/manifest.json, icons/
 └─ PLAN.md
 ```
 
 ---
 
-## 8. Roadmap por fases
+## 9. Roadmap por fases
 
-| Fase | Entregable | Tiempo estimado |
+| Fase | Entregable | Tiempo |
 |---|---|---|
-| **0. Setup** | Repo Next.js + Tailwind, layout móvil, bottom nav, deploy en Vercel | ½ día |
-| **1. Prototipo UI** | Deck de swipe funcionando con datos falsos, modal de match, pantallas maquetadas | 1–2 días |
-| **2. Backend** | Supabase: auth, tablas, perfiles reales, onboarding, subir foto | 1–2 días |
-| **3. Matching** | Guardar swipes, trigger de match, lista de matches, RLS | 1 día |
-| **4. Chat** | Mensajes en tiempo real | 1 día |
-| **5. PWA + pulido** | Manifest, íconos, instalable, animaciones, estados vacíos ("no hay más hackers") | 1 día |
-| **6. V2** | Filtros, compatibilidad por skills, equipos, notificaciones | según tiempo |
+| **0. Setup** | Next.js + Tailwind, layout móvil, bottom nav, deploy en Vercel | ½ día |
+| **1. Prototipo UI** | Deck con datos falsos, selector de modo, carrusel de fotos, modal de match | 1–2 días |
+| **2. Backend** | Supabase: auth, onboarding completo, subir fotos | 2 días |
+| **3. Matching** | `get_deck()` con filtros de género/modo, swipes, trigger de match, RLS | 1–2 días |
+| **4. Chat + seguridad** | Chat en tiempo real, bloquear, reportar, deshacer match | 1–2 días |
+| **5. PWA + pulido** | Instalable, animaciones, estados vacíos, icebreakers | 1 día |
+| **6. V2** | Modo "En el evento", likes a prompts, verificación, notificaciones | según el tiempo |
 
-**Total MVP: ~1 semana** para una persona (o un fin de semana de hackathon con 2–3 personas repartiendo frontend / backend / diseño).
-
----
-
-## 9. Riesgos y cosas a cuidar
-
-- **Arranque en frío**: la app no sirve si hay poca gente en el evento → aliarse con organizadores, código QR en el evento, o mostrar perfiles de seed en la demo.
-- **Privacidad**: no exponer email; links solo visibles tras match (opcional).
-- **Moderación**: botón de reportar/bloquear desde el MVP+1.
-- **Gestos en iOS Safari**: probar en dispositivo real; evitar conflicto con el gesto de "atrás".
+**MVP: ~1,5–2 semanas** para una persona.
 
 ---
 
-## 10. Próximo paso concreto
+## 10. Riesgos
 
-1. Decidir: ¿prototipo con datos falsos primero, o directo con Supabase?
-2. Crear el proyecto Next.js + Tailwind + Framer Motion.
-3. Construir el **layout móvil + deck de swipe** con 10 perfiles de ejemplo — es la pieza que más "vende" la idea.
+- **Pocos usuarios** (sobre todo en un modo *Date* con pocas chicas, ya que en los hackathones suele haber más hombres): ofrecer los tres modos ayuda, porque la app sigue siendo útil aunque no haya muchos matches de citas. Aliarse con organizadores y comunidades (Women in Tech, clubes de programación universitarios) y lanzar en un evento concreto.
+- **Seguridad y acoso**: bloquear y reportar desde el día 1, moderación activa y política clara.
+- **Imagen ante los organizadores**: presentarla como "app social del hackathon" (amigos + equipo + citas), no solo como app de ligue. Así es más fácil que la apoyen.
+- **iOS Safari**: probar los gestos en un dispositivo real.
+
+---
+
+## 11. Próximo paso concreto
+
+1. Crear el proyecto Next.js + Tailwind + Framer Motion.
+2. Construir el **layout móvil + deck de swipe con selector de modo** y ~12 perfiles de ejemplo.
+3. Después, conectar Supabase.
