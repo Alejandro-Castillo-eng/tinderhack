@@ -191,8 +191,8 @@ tinderhack/
 
 | Fase | Entregable | Tiempo |
 |---|---|---|
-| **0. Setup** | Next.js + Tailwind, layout móvil, bottom nav, deploy en Vercel | ½ día |
-| **1. Prototipo UI** | Deck con datos falsos, selector de modo, carrusel de fotos, modal de match | 1–2 días |
+| **0. Setup** ✅ | Next.js + Tailwind, layout móvil, bottom nav | ½ día |
+| **1. Prototipo UI** ✅ | Deck con datos falsos, selector de modo, carrusel de fotos, modal de match, onboarding, chat simulado, bloquear/reportar, PWA | 1–2 días |
 | **2. Backend** | Supabase: auth, onboarding completo, subir fotos | 2 días |
 | **3. Matching** | `get_deck()` con filtros de género/modo, swipes, trigger de match, RLS | 1–2 días |
 | **4. Chat + seguridad** | Chat en tiempo real, bloquear, reportar, deshacer match | 1–2 días |
@@ -214,6 +214,7 @@ tinderhack/
 
 ## 11. Próximo paso concreto
 
-1. Crear el proyecto Next.js + Tailwind + Framer Motion.
-2. Construir el **layout móvil + deck de swipe con selector de modo** y ~12 perfiles de ejemplo.
-3. Después, conectar Supabase.
+El MVP de frontend ya está hecho (ver `README.md`): todas las pantallas funcionan con datos de ejemplo guardados en el dispositivo.
+
+1. Desplegar en Vercel y probar en teléfonos reales (sobre todo los gestos en iOS Safari).
+2. **Fase 2**: crear el proyecto de Supabase (tablas, RLS, trigger de match y `get_deck()`) e implementar la misma API de `lib/store.tsx` contra Supabase: auth, fotos en Storage y chat con Realtime.
